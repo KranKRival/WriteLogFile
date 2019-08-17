@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void WriteLogFile(const char* input, int type)
+void WriteLogFile(const char* path, const char* input, int type)
 {
 	time_t lTime = time(NULL);
 	struct tm* timestruct = localtime((const time_t *) &lTime);
@@ -11,7 +11,7 @@ void WriteLogFile(const char* input, int type)
 	int sec = timestruct->tm_sec;
 	char time[9];
 	sprintf(time, "%02d:%02d:%02d", hour, min, sec);
-    char output[1000];
+        char output[1000];
 	switch (type)
 	{
 		case 0: 
@@ -21,7 +21,8 @@ void WriteLogFile(const char* input, int type)
 		sprintf(output, "[%s] [INFO] %s", time, input);
 		break;
 	}
-	FILE* pFile = fopen("sdmc://WriteLogFile.log", "a");
+	FILE* pFile = fopen(path, "a");
 	fprintf(pFile, "%s\n",output);
 	fclose(pFile);
 }
+
