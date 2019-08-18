@@ -17,20 +17,20 @@ void WriteLogFile(const char* path, LogType type, const char *fmt, ...)
 	int sec = timestruct->tm_sec;
 	char time[9];
 	sprintf(time, "%02d:%02d:%02d", hour, min, sec);
-        char type[16];
+        char _type[16];
 	switch (type)
 	{
 		case LogType_Error: 
-		strcpy(type, "ERROR");
+		strcpy(_type, "ERROR");
 		break;
 		case LogType_Info: 
-		strcpy(type, "INFO");
+		strcpy(_type, "INFO");
 		break;
 	}
 	FILE* pFile = fopen(path, "a");
 	if(pFile)
 	{
-		fprintf(pFile, "[%s] [%s] ", time, type);
+		fprintf(pFile, "[%s] [%s] ", time, _type);
 		va_list args;
 		va_start(args, fmt);
 		vfprintf(pFile, fmt, args);
