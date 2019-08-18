@@ -1,8 +1,14 @@
 #include <time.h>
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
-void WriteLogFile(const char* path, const char* input, int type)
+typedef enum {
+	LogType_Error = 0,
+	LogType_Info = 1,
+} LogType;
+
+void WriteLogFile(const char* path, LogType type, const char *fmt, ...)
 {
 	time_t lTime = time(NULL);
 	struct tm* timestruct = localtime((const time_t *) &lTime);
@@ -11,18 +17,26 @@ void WriteLogFile(const char* path, const char* input, int type)
 	int sec = timestruct->tm_sec;
 	char time[9];
 	sprintf(time, "%02d:%02d:%02d", hour, min, sec);
-        char output[1000];
+        char type[16];
 	switch (type)
 	{
-		case 0: 
-		sprintf(output, "[%s] [ERROR] %s", time, input);
+		case LogType_Error: 
+		strcpy(type, "ERROR");
 		break;
-		case 1: 
-		sprintf(output, "[%s] [INFO] %s", time, input);
+		case LogType_Info: 
+		strcpy(type, "INFO");
 		break;
 	}
 	FILE* pFile = fopen(path, "a");
-	fprintf(pFile, "%s\n",output);
+	if(pFile)
+	{
+		fprintf(pFile, "[%s] [%s] ", time, type);
+		va_list args;
+		va_start(args, fmt);
+		vfprintf(pFile, fmt, args);
+		va_end(args);
+		fprintf(pFile, "\n");
+	}
 	fclose(pFile);
 }
 
