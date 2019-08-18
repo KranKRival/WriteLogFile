@@ -16,3 +16,11 @@ int main()
    WriteLogFile(LogFilePath, "Error From My App", 0) // 0 for [ERROR]
 }
 ```
+# Output
+```
+WriteLogFile.log
+```
+```
+[12:00:01][INFO]Info From My App
+[12:00:01][ERROR]Error From My App
+```
